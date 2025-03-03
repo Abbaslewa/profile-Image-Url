@@ -41,7 +41,7 @@ exports.registerUser = async (req, res) => {
       fullName,
       username,
       email,
-      password: hashedPassword, // Save hashed password
+      password,
       profileImageUrl,
     });
 
@@ -64,19 +64,9 @@ exports.loginUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-
-    if (!user) {
-      console.log("User not found with email:", email);
+    if (!user || !(await user.comparePassword(password))) {
       return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      console.log("Password mismatch for user:", email);
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
+    };
     res.status(200).json({
       id: user._id,
       user: {
@@ -87,8 +77,9 @@ exports.loginUser = async (req, res) => {
       },
       token: generateToken(user._id),
     });
+
   } catch (error) {
-    res.status(500).json({ message: "Error logging in user", error: error.message });
+    res.status(500).json({ message: "Error registering  user", error: error.message });
   }
 };
 

@@ -22,8 +22,7 @@ app.use(express.json());
 connectDB();
 app.use("/api/v1/auth", AuthRoutes);
 
-// Fixed the typo and used path.join() correctly
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8001;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

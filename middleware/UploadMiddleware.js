@@ -3,10 +3,10 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Correct the first argument to 'destination'
+    cb(null, "uploads/"); 
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`); // Use Date.now() instead of Data.new()
+    cb(null, `${Date.now()}-${file.originalname}`); 
   },
 });
 
@@ -15,7 +15,7 @@ const fileFilter = (req, file, cb) => {
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Only jpeg, jpg, and png formats are allowed"), false); // Added missing comma before false
+    cb(new Error("Only jpeg, jpg, and png formats are allowed"), false); 
   }
 };
 const upload = multer({storage, fileFilter })
